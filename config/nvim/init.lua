@@ -1,2 +1,3 @@
--- targetting a directory
-require("ToadSage")
+require("core.options")
+require("core.keymaps")
+require("core.lazy")
