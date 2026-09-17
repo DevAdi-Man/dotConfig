@@ -2,7 +2,7 @@
   "layer": "top",
   "position": "top",
   // "width": 1920,
-  "modules-left": ["custom/workspaces", "custom/music", "custom/pomodoro"],
+  "modules-left": ["custom/workspaces", "custom/music", "custom/pomodoro", "custom/wallpaper"],
   "custom/workspaces": {
     "exec": "~/.config/waybar/scripts/workspaces.sh",
     "interval": 1,
@@ -16,7 +16,7 @@
     "clock",
   ],
   "modules-right": [
-    "pulseaudio",
+    "custom/volume",
     "network",
     "bluetooth",
     "backlight",
@@ -25,6 +25,17 @@
     "custom/lock",
     "custom/power",
   ],
+  "custom/volume": {
+    "exec": "~/.config/waybar/scripts/volume.sh",
+    "return-type": "json",
+    "interval": 0,
+    "format": "{}",
+    "tooltip": true,
+    "on-click": "pavucontrol",
+    "on-click-middle": "~/.scripts/vol-ctl-wrapper.sh mute",
+    "on-scroll-up": "~/.scripts/vol-ctl-wrapper.sh raise",
+    "on-scroll-down": "~/.scripts/vol-ctl-wrapper.sh lower",
+  },
   "tray": {
     "icon-size": 21,
     "spacing": 10,
@@ -69,21 +80,17 @@
     "format-alt": "{icon}",
     "format-icons": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
   },
-  "pulseaudio": {
-    // "scroll-step": 1, // %, can be a float
-    "format": "{icon} {volume}%",
-    "format-muted": "",
-    "format-icons": {
-      "default": ["", "", " "],
-    },
-    "on-click": "pavucontrol",
-  },
   "custom/lock": {
     "tooltip": false,
     "on-click": "sleep 0.5s && swaylock",
     "format": "",
   },
-  "custom/power": {
+  "custom/wallpaper": {
+    "tooltip": false,
+    "on-click": "~/.scripts/wallpaper.sh",
+    "on-click-right": "~/.scripts/wallpaper.sh random",
+    "format": "󰋩",
+  },  "custom/power": {
     "tooltip": false,
     "on-click": "wlogout &",
     "format": "",

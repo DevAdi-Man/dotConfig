@@ -7,6 +7,12 @@ vim.g.maplocalleader = '\\'
 -- Disable the spacebar key's default behavior in Normal and visual modes
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+-- Disable arrow keys
+vim.keymap.set({ 'n', 'v', 'i' }, '<Up>', '<Nop>', { silent = true })
+vim.keymap.set({ 'n', 'v', 'i' }, '<Down>', '<Nop>', { silent = true })
+vim.keymap.set({ 'n', 'v', 'i' }, '<Left>', '<Nop>', { silent = true })
+vim.keymap.set({ 'n', 'v', 'i' }, '<Right>', '<Nop>', { silent = true })
+
 -- Copy to system clipboard
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]])
 vim.keymap.set('n', '<leader>Y', [["+Y]])
@@ -27,11 +33,7 @@ if vim.fn.has 'win32' == 0 then
   vim.keymap.set('n', '<leader>x', '<cmd>!chmod +x %<CR>', { silent = true })
 end
 
--- Resize with arrow
-vim.keymap.set('n', '<Up>', ':resize -2<CR>', opts)
-vim.keymap.set('n', '<Down>', ':resize +2<CR>', opts)
-vim.keymap.set('n', '<Left>', ':vertical resize -2<CR>', opts)
-vim.keymap.set('n', '<Right>', ':vertical resize +2<CR>', opts)
+
 
 -- Buffer
 vim.keymap.set('n', '<Tab>', ':bnext<CR>', opts)
@@ -54,6 +56,31 @@ vim.keymap.set('n', '<leader>h', '<C-w>s', opts) -- split window horizontally
 vim.keymap.set('n', '<leader>se', '<C-w>=', opts) -- make split windows equal width & height
 vim.keymap.set('n', '<leader>xs', ':close<CR>', opts) -- close current split window
 
+-- Vimium-style "F" mode: shows a letter hint on every visible window
+-- (including floats like Godot docs/console), press the letter to jump there.
+vim.keymap.set('n', '<leader>F', function()
+	local ok, picker = pcall(require, 'window-picker')
+	if not ok then
+		vim.notify('window-picker not available', vim.log.levels.WARN)
+		return
+	end
+	local picked = picker.pick_window({
+		include_current_win = false,
+		-- big floating letters (Vimium style); statusline hints get hidden
+		-- behind lualine, so use float hints instead
+		hint = 'floating-big-letter',
+		-- override neo-tree's filters so ALL windows get hints (floats, console, docs, etc.)
+		filter_rules = {
+			autoselect_one = false,
+			bo = { filetype = {}, buftype = {} },
+			wo = {},
+		},
+	})
+	if picked then
+		vim.api.nvim_set_current_win(picked)
+	end
+end, { noremap = true, silent = true, desc = 'Vimium F: pick window by letter hint' })
+
 -- Navigate between splits
 vim.keymap.set('n', '<C-k>', ':wincmd k<CR>', opts)
 vim.keymap.set('n', '<C-j>', ':wincmd j<CR>', opts)
@@ -68,6 +95,18 @@ vim.keymap.set('n', '<leader>tp', ':tabp<CR>', opts) --  go to previous tab
 
 -- Toggle line wrapping
 vim.keymap.set('n', '<leader>lw', '<cmd>set wrap!<CR>', opts)
+
+-- Scroll hover/float window
+vim.keymap.set('n', '<C-f>', function()
+  if not require('noice.lsp').scroll(4) then
+    return '<C-f>'
+  end
+end, { silent = true, expr = true })
+vim.keymap.set('n', '<C-b>', function()
+  if not require('noice.lsp').scroll(-4) then
+    return '<C-b>'
+  end
+end, { silent = true, expr = true })
 
 -- Stay in indent mode
 vim.keymap.set('v', '<', '<gv', opts)
@@ -87,6 +126,9 @@ end, { desc = 'Go to next diagnostic message' })
 
 vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+
+-- Reload/refresh current file from disk (like VS Code's Revert File)
+vim.keymap.set('n', '<leader>rf', ':e!<CR>', { desc = 'Reload current file from disk' })
 
 -- Open nvim config from any where
 vim.keymap.set('n', '<leader>ev', function()

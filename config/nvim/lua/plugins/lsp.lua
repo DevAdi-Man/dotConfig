@@ -196,5 +196,8 @@ return {
 			vim.lsp.config(server, cfg)
 			vim.lsp.enable(server)
 		end
+
+		-- Kotlin / Android / Compose (KMP + CMP) LSP + Gradle runner setup
+		require("config.kotlin").setup()
 	end,
 }

@@ -9,9 +9,12 @@ return {
 		{ "<leader>gl", "<cmd>Git log<cr>", desc = "Git log" },
 
 		{ "<leader>ga", "<cmd>Git add .<cr>", desc = "Git add all" },
-		{ "<leader>gc", "<cmd>Git commit<cr>", desc = "Git commit" },
+		{ "<leader>gc", "<cmd>Git commit<cr>", desc = "Git commit", nowait = true },
 		{ "<leader>gca", "<cmd>Git commit --amend<cr>", desc = "Edit last commit message" },
 		{ "<leader>gcf", "<cmd>Git commit --amend --no-edit<cr>", desc = "Fix last commit (no message change)" },
+
+		-- inline commit: stage all + open commit buffer in one step
+		{ "<leader>gC", "<cmd>Git add . | Git commit<cr>", desc = "Git add all + commit" },
 
 		{ "<leader>gp", "<cmd>Git push<cr>", desc = "Git push" },
 		{ "<leader>gP", "<cmd>Git pull<cr>", desc = "Git pull" },

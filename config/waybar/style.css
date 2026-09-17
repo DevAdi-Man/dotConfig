@@ -27,11 +27,13 @@
 /* Shared module styles */
 #custom-music,
 #custom-pomodoro,
+#custom-wallpaper,
 #tray,
 #backlight,
 #clock,
 #battery,
 #pulseaudio,
+#custom-volume,
 #network,
 #bluetooth,
 #custom-lock,
@@ -87,6 +89,12 @@
   margin-left: 0.5rem;
 }
 
+#custom-wallpaper {
+  color: @teal;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+}
+
 #custom-pomodoro.running {
   color: @green;
 }
@@ -110,8 +118,8 @@
   border-radius: 0px 1rem 1rem 0px;
 }
 
-/* Right section - pulseaudio is first (left edge) */
-#pulseaudio {
+/* Right section - volume is first (left edge) */
+#custom-volume {
   color: @maroon;
   border-radius: 1rem 0px 0px 1rem;
   margin-left: 1rem;

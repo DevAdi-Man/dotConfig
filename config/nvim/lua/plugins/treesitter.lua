@@ -16,6 +16,7 @@ return {
 			"properties", "xml", "make", "cmake",
 			"dockerfile", "terraform", "yaml", "toml",
 			"graphql", "sql", "gitignore",
+			"gdscript", "gdshader", -- Godot 4 (used by godotdev.nvim)
 			"markdown", "markdown_inline",
 		}
 		require("nvim-treesitter.install").install(parsers)
